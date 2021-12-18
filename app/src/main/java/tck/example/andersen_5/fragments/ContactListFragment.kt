@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,18 +14,20 @@ import tck.example.andersen_5.R
 import tck.example.andersen_5.adapter.ContactsListAdapter
 import tck.example.andersen_5.viewModel.ContactListViewModel
 import java.util.*
+import android.view.inputmethod.EditorInfo
+
+
+
 
 private const val TAG = "ContactListFragment"
 class ContactListFragment: Fragment() {
     interface Callbacks{
         fun onContactSelected(contactId: UUID)
     }
-    interface DeleteCallback{
-        fun onContactDelete(contactId: UUID)
-    }
 
     private lateinit var contactRecyclerView: RecyclerView
-    private var adapter: ContactsListAdapter? = ContactsListAdapter(emptyList())
+    private val contactsList = mutableListOf<Contact>()
+    private var adapter: ContactsListAdapter? = ContactsListAdapter(contactsList)
     private val contactListViewModel: ContactListViewModel by lazy {
         ViewModelProvider(this).get(ContactListViewModel::class.java)
     }
@@ -33,7 +36,6 @@ class ContactListFragment: Fragment() {
         super.onAttach(context)
         callbacks = context as Callbacks?
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,13 +64,28 @@ class ContactListFragment: Fragment() {
 
     private fun updateUI(contacts: List<Contact>){
         if (contacts.isEmpty()) {}
-        adapter = ContactsListAdapter(contacts)
+        adapter = ContactsListAdapter(contacts.toMutableList())
         contactRecyclerView.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.contact_list_menu,menu)
+
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                adapter?.filter?.filter(newText)
+                return false
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -1,17 +1,20 @@
 package tck.example.andersen_5.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import tck.example.andersen_5.R
 import tck.example.andersen_5.classes.Contact
 import tck.example.andersen_5.fragments.ContactListFragment
 
-class ContactsListAdapter(var contact:List<Contact>): RecyclerView.Adapter<ContactHolder>(){
+
+class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
+
+    private val contactListFull: MutableList<Contact> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
@@ -24,9 +27,42 @@ class ContactsListAdapter(var contact:List<Contact>): RecyclerView.Adapter<Conta
     override fun getItemCount(): Int {
         return contact.size
     }
+    override fun getFilter(): Filter {
+        return exampleFilter
+    }
+
+    private val exampleFilter: Filter = object : Filter() {
+
+        override fun performFiltering(constraint: CharSequence): FilterResults {
+            val filteredList: MutableList<Contact> = ArrayList()
+            if (constraint.isEmpty()) {
+                filteredList.addAll(contactListFull)
+            } else {
+                val filterPattern = constraint.toString().lowercase().trim { it <= ' ' }
+                for (item in contactListFull) {
+                    if (item.firstName.lowercase().contains(filterPattern)) {
+                        filteredList.add(item)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
+            contact.clear()
+            contact.addAll(results.values as List<Contact>)
+            notifyDataSetChanged()
+        }
+    }
+    init {
+        contactListFull.addAll(contact)
+    }
 }
 
-class ContactHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener,View.OnLongClickListener {
+
+class ContactHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
     private lateinit var contact: Contact
     private val firstNameTextView: TextView = itemView.findViewById(R.id.contactFirstname)
     private val secondNameTextView: TextView = itemView.findViewById(R.id.contactSecondName)
@@ -45,23 +81,4 @@ class ContactHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
         ContactListFragment.callbacks?.onContactSelected(contact.id)
     }
 
-    override fun onLongClick(p0: View?): Boolean {
-
-        val builder = AlertDialog.Builder(p0!!.context)
-        builder.setTitle("Delete contact")
-        builder.setCancelable(false)
-        builder.setMessage("Delete this contact?")
-        builder.setPositiveButton("yes") { _, _ ->
-            try {
-
-                } catch (e: Exception) {
-                Log.d("TAG", "deleteContact error")
-            }
-        }
-        builder.setNegativeButton("No", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-
-        return true
-    }
 }
