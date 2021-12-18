@@ -38,16 +38,12 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
             if (constraint.isEmpty()) {
                 filteredList.addAll(contactListFull)
             } else {
-                val filterPattern = constraint.toString().lowercase().trim { it <= ' ' }
+                val filter = constraint.toString().lowercase().trim { it <= ' ' }
                 for (item in contactListFull) {
-                    if (item.firstName.lowercase().contains(filterPattern)) {
-                        filteredList.add(item)
-                    }
-                    if (item.secondName.lowercase().contains(filterPattern)) {
-                        filteredList.add(item)
-                    }
-                    if (item.phoneNumber.lowercase().contains(filterPattern)) {
-                        filteredList.add(item)
+                    when{
+                        item.firstName.lowercase().contains(filter) -> filteredList.add(item)
+                        item.secondName.lowercase().contains(filter) -> filteredList.add(item)
+                        item.phoneNumber.lowercase().contains(filter) -> filteredList.add(item)
                     }
                 }
             }
