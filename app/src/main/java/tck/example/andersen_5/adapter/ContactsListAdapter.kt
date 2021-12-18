@@ -43,6 +43,12 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
                     if (item.firstName.lowercase().contains(filterPattern)) {
                         filteredList.add(item)
                     }
+                    if (item.secondName.lowercase().contains(filterPattern)) {
+                        filteredList.add(item)
+                    }
+                    if (item.phoneNumber.lowercase().contains(filterPattern)) {
+                        filteredList.add(item)
+                    }
                 }
             }
             val results = FilterResults()
