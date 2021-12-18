@@ -7,14 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import tck.example.andersen_5.ContactRepository
 import tck.example.andersen_5.R
 import tck.example.andersen_5.classes.Contact
 import tck.example.andersen_5.fragments.ContactListFragment
-import java.util.*
 
-
-class ContactsListAdapter(context: ContactListFragment, var contact:List<Contact>): RecyclerView.Adapter<ContactHolder>(){
+class ContactsListAdapter(var contact:List<Contact>): RecyclerView.Adapter<ContactHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
@@ -49,6 +46,7 @@ class ContactHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
     }
 
     override fun onLongClick(p0: View?): Boolean {
+
         val builder = AlertDialog.Builder(p0!!.context)
         builder.setTitle("Delete contact")
         builder.setCancelable(false)

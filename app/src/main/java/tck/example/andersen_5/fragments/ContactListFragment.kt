@@ -24,7 +24,7 @@ class ContactListFragment: Fragment() {
     }
 
     private lateinit var contactRecyclerView: RecyclerView
-    private var adapter: ContactsListAdapter? = ContactsListAdapter(this, emptyList())
+    private var adapter: ContactsListAdapter? = ContactsListAdapter(emptyList())
     private val contactListViewModel: ContactListViewModel by lazy {
         ViewModelProvider(this).get(ContactListViewModel::class.java)
     }
@@ -62,7 +62,7 @@ class ContactListFragment: Fragment() {
 
     private fun updateUI(contacts: List<Contact>){
         if (contacts.isEmpty()) {}
-        adapter = ContactsListAdapter(this, contacts)
+        adapter = ContactsListAdapter(contacts)
         contactRecyclerView.adapter = adapter
     }
 
