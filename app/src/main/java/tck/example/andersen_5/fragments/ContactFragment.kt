@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import tck.example.andersen_5.classes.Contact
 import tck.example.andersen_5.R
+import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.viewModel.ContactViewModel
 import java.util.*
 
@@ -116,8 +117,7 @@ class ContactFragment: Fragment(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.delete_contact -> {
-                contactViewModel.deleteContact(contactId)
-                callback?.onContactReplaced()
+                deleteContactDialog(requireContext(),contactId,true)
                 true
             }
             else -> return super.onOptionsItemSelected(item)

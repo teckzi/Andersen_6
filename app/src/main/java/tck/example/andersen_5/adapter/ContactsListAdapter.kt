@@ -3,13 +3,13 @@ package tck.example.andersen_5.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import tck.example.andersen_5.R
 import tck.example.andersen_5.classes.Contact
+import android.widget.*
+import tck.example.andersen_5.R
+import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
+import kotlin.collections.ArrayList
 
 
 class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
@@ -23,6 +23,11 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
     override fun onBindViewHolder(holder: ContactHolder, position: Int) {
         val contact = contact[position]
         holder.bind(contact)
+
+        holder.view.setOnLongClickListener{
+            deleteContactDialog(holder.view.context,contact.id)
+            true
+        }
     }
     override fun getItemCount(): Int {
         return contact.size
@@ -64,7 +69,7 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
 }
 
 
-class ContactHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener{
+class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener{
     private lateinit var contact: Contact
     private val firstNameTextView: TextView = itemView.findViewById(R.id.contactFirstname)
     private val secondNameTextView: TextView = itemView.findViewById(R.id.contactSecondName)
@@ -81,6 +86,10 @@ class ContactHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
 
     override fun onClick(view: View?) {
         ContactListFragment.callbacks?.onContactSelected(contact.id)
+    }
+
+    override fun onLongClick(view: View?): Boolean {
+        return true
     }
 
 }
