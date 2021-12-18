@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity(),ContactListFragment.Callbacks,ContactFr
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container,listFragment).commit()
         }
     }
-
     override fun onContactSelected(contactId: UUID) {
         val fragment = ContactFragment.newInstance(contactId)
         val container = findViewById<View>(R.id.fragment_container_detail)
