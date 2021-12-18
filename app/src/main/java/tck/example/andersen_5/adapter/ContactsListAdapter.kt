@@ -14,7 +14,7 @@ import tck.example.andersen_5.fragments.ContactListFragment
 import java.util.*
 
 
-class ContactsListAdapter(context: ContactListFragment, var contact:List<Contact>): RecyclerView.Adapter<ContactHolder>(){
+class ContactsListAdapter(var contact:List<Contact>): RecyclerView.Adapter<ContactHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
