@@ -1,5 +1,6 @@
 package tck.example.andersen_5.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
 
-class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
+class ContactsListAdapter(var contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
 
     private var contactListFull: MutableList<Contact> = mutableListOf()
 
@@ -58,18 +59,10 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             contact.clear()
-            contact.addAll(results.values as Collection<Contact>)
-            //setData(results.values as List<Contact>)
+            contact.addAll(results.values as List<Contact>)
             notifyDataSetChanged()
         }
     }
-    fun setData(newContactList: List<Contact>){
-        val diffUtil = MyDiffUtil(contact,newContactList)
-        val diffResults = DiffUtil.calculateDiff(diffUtil)
-        contactListFull = newContactList as MutableList<Contact>
-        diffResults.dispatchUpdatesTo(this)
-    }
-
     init {
         contactListFull.addAll(contact)
     }
@@ -120,5 +113,4 @@ class MyDiffUtil(private val oldList:List<Contact>,private val newList:List<Cont
             else -> true
         }
     }
-
 }

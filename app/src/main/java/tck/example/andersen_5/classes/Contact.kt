@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-class Contact(@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class Contact(@PrimaryKey val id: UUID = UUID.randomUUID(),
               var firstName: String = "",
               var secondName:String = "",
               var phoneNumber:String = "")
