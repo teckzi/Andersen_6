@@ -58,9 +58,9 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             contact.clear()
-            //contact.addAll(results.values as Collection<Contact>)
-            setData(results.values as List<Contact>)
-            //notifyDataSetChanged()
+            contact.addAll(results.values as Collection<Contact>)
+            //setData(results.values as List<Contact>)
+            notifyDataSetChanged()
         }
     }
     fun setData(newContactList: List<Contact>){
