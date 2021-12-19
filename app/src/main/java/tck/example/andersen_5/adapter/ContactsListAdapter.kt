@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import tck.example.andersen_5.classes.Contact
 import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
+import coil.load
 import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
@@ -48,7 +49,6 @@ class ContactsListAdapter(var contact:MutableList<Contact>): RecyclerView.Adapte
                     when{
                         item.firstName.lowercase().contains(filter) -> filteredList.add(item)
                         item.secondName.lowercase().contains(filter) -> filteredList.add(item)
-                        item.phoneNumber.lowercase().contains(filter) -> filteredList.add(item)
                     }
                 }
             }
@@ -73,6 +73,7 @@ class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClick
     private val firstNameTextView: TextView = itemView.findViewById(R.id.contactFirstname)
     private val secondNameTextView: TextView = itemView.findViewById(R.id.contactSecondName)
     private val phoneNumberTextView: TextView = itemView.findViewById(R.id.contactPhoneNumber)
+    private val photoImageView:ImageView = itemView.findViewById(R.id.photoImageView)
     init {
         itemView.setOnClickListener(this)
     }
@@ -81,6 +82,7 @@ class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClick
         firstNameTextView.text = this.contact.firstName
         secondNameTextView.text = this.contact.secondName
         phoneNumberTextView.text = this.contact.phoneNumber
+        photoImageView.load(this.contact.photoUrl)
     }
 
     override fun onClick(view: View?) {

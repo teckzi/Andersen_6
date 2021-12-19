@@ -18,7 +18,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 
-
 private const val TAG = "ContactListFragment"
 class ContactListFragment: Fragment() {
     interface Callbacks{
@@ -68,9 +67,27 @@ class ContactListFragment: Fragment() {
     }
 
     private fun updateUI(contacts: List<Contact>){
-        //if (contacts.isEmpty()) {}
+        if (contacts.isEmpty()) {
+            val addContacts:List<Contact> = (1..300).map {
+                i -> Contact(firstName = "FirstName $i",
+                secondName = "SecondName $i",
+                phoneNumber = "+${generatePhoneNumber()}",
+                photoUrl = "https://rickandmortyapi.com/api/character/avatar/$i.jpeg")
+            }
+            for (each in addContacts) contactListViewModel.addContact(each)
+        }
         adapter = ContactsListAdapter(contacts.toMutableList())
         contactRecyclerView.adapter = adapter
+    }
+
+    private fun generatePhoneNumber():String{
+        val numbers = "0123456789"
+        val length = 12
+        var result = ""
+        for (each in 0..length) {
+            result += numbers.random()
+        }
+        return result
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

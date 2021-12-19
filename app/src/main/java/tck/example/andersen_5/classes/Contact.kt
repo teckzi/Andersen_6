@@ -6,6 +6,7 @@ import java.util.*
 
 @Entity
 data class Contact(@PrimaryKey val id: UUID = UUID.randomUUID(),
-              var firstName: String = "",
-              var secondName:String = "",
-              var phoneNumber:String = "")
+                   var firstName: String = "",
+                   var secondName:String = "",
+                   var phoneNumber:String = "",
+                   var photoUrl:String = "")

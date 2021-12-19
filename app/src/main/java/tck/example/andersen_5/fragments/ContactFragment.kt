@@ -8,8 +8,10 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import tck.example.andersen_5.classes.Contact
 import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
@@ -23,11 +25,12 @@ class ContactFragment: Fragment(){
         fun onContactReplaced()
     }
     private lateinit var contact: Contact
+    private lateinit var contactId: UUID
     private lateinit var firstName: EditText
     private lateinit var secondName:EditText
     private lateinit var phoneNumber:EditText
-    private lateinit var contactId: UUID
     private lateinit var saveButton: Button
+    private lateinit var photoImageView:ImageView
     private var onSaveButtonPress:Boolean = false
     private var firstNameEmpty = false
     private var secondNameEmpty = false
@@ -61,6 +64,7 @@ class ContactFragment: Fragment(){
         secondName = view.findViewById(R.id.secondName)
         phoneNumber = view.findViewById(R.id.number)
         saveButton = view.findViewById(R.id.saveButton)
+        photoImageView = view.findViewById(R.id.photoImage)
         return view
     }
 
@@ -128,7 +132,7 @@ class ContactFragment: Fragment(){
         firstName.setText(contact.firstName)
         secondName.setText(contact.secondName)
         phoneNumber.setText(contact.phoneNumber)
-
+        photoImageView.load(contact.photoUrl)
         firstNameEmpty = firstName.text.toString() == ""
         secondNameEmpty = secondName.text.toString() == ""
         phoneNumberEmpty = phoneNumber.text.toString() == ""
