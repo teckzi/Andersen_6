@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tck.example.andersen_5.classes.Contact
 import android.widget.*
+import androidx.recyclerview.widget.DiffUtil
 import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
 
 class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
 
-    private val contactListFull: MutableList<Contact> = mutableListOf()
+    private var contactListFull: MutableList<Contact> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
@@ -57,10 +58,18 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             contact.clear()
-            contact.addAll(results.values as Collection<Contact>)
-            notifyDataSetChanged()
+            //contact.addAll(results.values as Collection<Contact>)
+            setData(results.values as List<Contact>)
+            //notifyDataSetChanged()
         }
     }
+    fun setData(newContactList: List<Contact>){
+        val diffUtil = MyDiffUtil(contact,newContactList)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        contactListFull = newContactList as MutableList<Contact>
+        diffResults.dispatchUpdatesTo(this)
+    }
+
     init {
         contactListFull.addAll(contact)
     }
@@ -88,4 +97,28 @@ class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClick
     override fun onLongClick(view: View?): Boolean {
         return true
     }
+}
+
+class MyDiffUtil(private val oldList:List<Contact>,private val newList:List<Contact>): DiffUtil.Callback(){
+    override fun getOldListSize(): Int {
+        return oldList.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return when {
+            oldList[oldItemPosition].id != newList[newItemPosition].id -> false
+            oldList[oldItemPosition].firstName != newList[newItemPosition].firstName -> false
+            oldList[oldItemPosition].secondName != newList[newItemPosition].secondName -> false
+            else -> true
+        }
+    }
+
 }
