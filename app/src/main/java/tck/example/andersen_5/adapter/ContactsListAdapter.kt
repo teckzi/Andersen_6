@@ -9,8 +9,6 @@ import android.widget.*
 import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
-import kotlin.collections.ArrayList
-
 
 class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
 
@@ -39,7 +37,7 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
     private val exampleFilter: Filter = object : Filter() {
 
         override fun performFiltering(constraint: CharSequence): FilterResults {
-            val filteredList: MutableList<Contact> = ArrayList()
+            val filteredList: MutableList<Contact> = mutableListOf()
             if (constraint.isEmpty()) {
                 filteredList.addAll(contactListFull)
             } else {
@@ -59,7 +57,7 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             contact.clear()
-            contact.addAll(results.values as List<Contact>)
+            contact.addAll(results.values as Collection<Contact>)
             notifyDataSetChanged()
         }
     }
@@ -67,7 +65,6 @@ class ContactsListAdapter(val contact:MutableList<Contact>): RecyclerView.Adapte
         contactListFull.addAll(contact)
     }
 }
-
 
 class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener{
     private lateinit var contact: Contact
@@ -91,5 +88,4 @@ class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClick
     override fun onLongClick(view: View?): Boolean {
         return true
     }
-
 }

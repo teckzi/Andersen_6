@@ -15,8 +15,8 @@ import tck.example.andersen_5.adapter.ContactsListAdapter
 import tck.example.andersen_5.viewModel.ContactListViewModel
 import java.util.*
 import android.view.inputmethod.EditorInfo
-
-
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 
 
 private const val TAG = "ContactListFragment"
@@ -43,8 +43,13 @@ class ContactListFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_contact_list, container, false)
         contactRecyclerView = view.findViewById(R.id.contacts_recycler_view)
-        contactRecyclerView.layoutManager = LinearLayoutManager(context)
-        contactRecyclerView.adapter = adapter
+        contactRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = adapter
+            val itemDecoration = DividerItemDecoration(this.context,DividerItemDecoration.VERTICAL)
+            itemDecoration.setDrawable(ContextCompat.getDrawable(context,R.drawable.recyclerview_divider)!!)
+            addItemDecoration(itemDecoration)
+        }
         return view
     }
 
@@ -63,7 +68,7 @@ class ContactListFragment: Fragment() {
     }
 
     private fun updateUI(contacts: List<Contact>){
-        if (contacts.isEmpty()) {}
+        //if (contacts.isEmpty()) {}
         adapter = ContactsListAdapter(contacts.toMutableList())
         contactRecyclerView.adapter = adapter
     }

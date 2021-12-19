@@ -13,8 +13,4 @@ class ContactListViewModel: ViewModel() {
     fun addContact (contact: Contact){
         contactRepository.addContact(contact)
     }
-
-    fun deleteContact(id: UUID){
-        contactRepository.deleteContact(id)
-    }
 }
