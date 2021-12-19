@@ -1,6 +1,5 @@
 package tck.example.andersen_5.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
 
 class ContactsListAdapter(var contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
-
     private var contactListFull: MutableList<Contact> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
