@@ -29,8 +29,7 @@ class MainActivity : AppCompatActivity(),ContactListFragment.Callbacks,ContactFr
     override fun onContactReplaced() {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container,listFragment).addToBackStack(null)
             .commit()
-        val fragmentTwo = ContactFragment()
         val container = findViewById<View>(R.id.fragment_container_detail)
-        if (container != null) supportFragmentManager.beginTransaction().remove(fragmentTwo).commit()
+        if (container != null) supportFragmentManager.beginTransaction().remove(ContactFragment()).commit()
     }
 }
