@@ -38,11 +38,9 @@ class ContactsListAdapter(var contactsListMain:List<Contact>): RecyclerView.Adap
             if (constraint.isEmpty()) filteredList.addAll(contactListSecond)
             else {
                 val filter = constraint.toString().lowercase().trim { it <= ' ' }
-                for (item in contactListSecond) {
-                    when{
-                        item.firstName.lowercase().contains(filter) -> filteredList.add(item)
-                        item.secondName.lowercase().contains(filter) -> filteredList.add(item)
-                    }
+                contactListSecond.forEach {
+                    if (it.firstName.lowercase().contains(filter)){filteredList.add(it)}
+                    else if(it.secondName.lowercase().contains(filter)) {filteredList.add(it)}
                 }
             }
             return FilterResults().apply {
