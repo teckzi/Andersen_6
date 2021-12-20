@@ -12,15 +12,15 @@ import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.fragments.ContactListFragment
 
-class ContactsListAdapter(var contact:MutableList<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
-    private var contactListFull: MutableList<Contact> = mutableListOf()
+class ContactsListAdapter(var contactsListMain:List<Contact>): RecyclerView.Adapter<ContactHolder>(),Filterable{
+    private var contactListSecond: MutableList<Contact> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
         return ContactHolder(view)
     }
     override fun onBindViewHolder(holder: ContactHolder, position: Int) {
-        val contact = contact[position]
+        val contact = contactsListMain[position]
         holder.bind(contact)
 
         holder.view.setOnLongClickListener{
@@ -28,41 +28,42 @@ class ContactsListAdapter(var contact:MutableList<Contact>): RecyclerView.Adapte
             true
         }
     }
-    override fun getItemCount(): Int {
-        return contact.size
-    }
-    override fun getFilter(): Filter {
-        return exampleFilter
-    }
+    override fun getItemCount(): Int = contactsListMain.size
+    override fun getFilter(): Filter = exampleFilter
 
     private val exampleFilter: Filter = object : Filter() {
 
         override fun performFiltering(constraint: CharSequence): FilterResults {
             val filteredList: MutableList<Contact> = mutableListOf()
-            if (constraint.isEmpty()) {
-                filteredList.addAll(contactListFull)
-            } else {
+            if (constraint.isEmpty()) filteredList.addAll(contactListSecond)
+            else {
                 val filter = constraint.toString().lowercase().trim { it <= ' ' }
-                for (item in contactListFull) {
+                for (item in contactListSecond) {
                     when{
                         item.firstName.lowercase().contains(filter) -> filteredList.add(item)
                         item.secondName.lowercase().contains(filter) -> filteredList.add(item)
                     }
                 }
             }
-            val results = FilterResults()
-            results.values = filteredList
-            return results
+            return FilterResults().apply {
+                values = filteredList
+            }
         }
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
-            contact.clear()
-            contact.addAll(results.values as List<Contact>)
-            notifyDataSetChanged()
+            setData(results.values as List<Contact>)
         }
     }
+
+    fun setData(newList: List<Contact>){
+        val diffUtil = MyDiffUtil(contactsListMain,newList)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        contactsListMain = newList
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     init {
-        contactListFull.addAll(contact)
+        contactListSecond.addAll(contactsListMain)
     }
 }
 
@@ -106,11 +107,6 @@ class MyDiffUtil(private val oldList:List<Contact>,private val newList:List<Cont
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return when {
-            oldList[oldItemPosition].id != newList[newItemPosition].id -> false
-            oldList[oldItemPosition].firstName != newList[newItemPosition].firstName -> false
-            oldList[oldItemPosition].secondName != newList[newItemPosition].secondName -> false
-            else -> true
-        }
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

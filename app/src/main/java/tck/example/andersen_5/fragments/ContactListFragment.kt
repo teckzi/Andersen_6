@@ -26,7 +26,7 @@ class ContactListFragment: Fragment() {
 
     private lateinit var contactRecyclerView: RecyclerView
     private val contactsList = mutableListOf<Contact>()
-    private var adapter: ContactsListAdapter? = ContactsListAdapter(contactsList)
+    private var myAdapter: ContactsListAdapter? = ContactsListAdapter(contactsList)
     private val contactListViewModel: ContactListViewModel by lazy {
         ViewModelProvider(this).get(ContactListViewModel::class.java)
     }
@@ -44,7 +44,7 @@ class ContactListFragment: Fragment() {
         contactRecyclerView = view.findViewById(R.id.contacts_recycler_view)
         contactRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = adapter
+            adapter = myAdapter
             val itemDecoration = DividerItemDecoration(this.context,DividerItemDecoration.VERTICAL)
             itemDecoration.setDrawable(ContextCompat.getDrawable(context,R.drawable.recyclerview_divider)!!)
             addItemDecoration(itemDecoration)
@@ -58,7 +58,6 @@ class ContactListFragment: Fragment() {
                 contacts.let {
                     Log.d(TAG, "Got contacts ${contacts.size}")
                     updateUI(contacts)} })
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,16 +75,14 @@ class ContactListFragment: Fragment() {
             }
             for (each in addContacts) contactListViewModel.addContact(each)
         }
-        adapter = ContactsListAdapter(contacts.toMutableList())
-        contactRecyclerView.adapter = adapter
+        myAdapter = ContactsListAdapter(contacts)
+        contactRecyclerView.adapter = myAdapter
     }
 
     private fun generatePhoneNumber():String{
-        val numbers = "0123456789"
-        val length = 12
         var result = ""
-        for (each in 0..length) {
-            result += numbers.random()
+        for (each in 0..12) {
+            result += "0123456789".random()
         }
         return result
     }
@@ -94,17 +91,14 @@ class ContactListFragment: Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.contact_list_menu,menu)
 
-        val searchItem = menu.findItem(R.id.search)
-        val searchView = searchItem.actionView as SearchView
+        val searchView = menu.findItem(R.id.search).actionView as SearchView
         searchView.imeOptions = EditorInfo.IME_ACTION_DONE
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return true
-            }
+            override fun onQueryTextSubmit(query: String): Boolean = true
 
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter?.filter?.filter(newText)
+                myAdapter?.filter?.filter(newText)
                 return true
             }
         })
