@@ -1,4 +1,4 @@
-package tck.example.andersen_5.classes
+package tck.example.andersen_5.contactsDatabase
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

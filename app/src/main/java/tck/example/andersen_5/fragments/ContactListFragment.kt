@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import tck.example.andersen_5.classes.Contact
+import tck.example.andersen_5.contactsDatabase.Contact
 import tck.example.andersen_5.R
 import tck.example.andersen_5.adapter.ContactsListAdapter
 import tck.example.andersen_5.viewModel.ContactListViewModel

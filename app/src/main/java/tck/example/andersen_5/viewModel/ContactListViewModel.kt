@@ -1,9 +1,8 @@
 package tck.example.andersen_5.viewModel
 
 import androidx.lifecycle.ViewModel
-import tck.example.andersen_5.classes.Contact
+import tck.example.andersen_5.contactsDatabase.Contact
 import tck.example.andersen_5.ContactRepository
-import java.util.*
 
 class ContactListViewModel: ViewModel() {
 

@@ -2,7 +2,6 @@ package tck.example.andersen_5.contactsDatabase
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import tck.example.andersen_5.classes.Contact
 import java.util.*
 
 @Dao

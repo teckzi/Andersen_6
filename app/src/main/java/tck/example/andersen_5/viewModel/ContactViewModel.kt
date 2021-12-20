@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import tck.example.andersen_5.classes.Contact
+import tck.example.andersen_5.contactsDatabase.Contact
 import tck.example.andersen_5.ContactRepository
 import java.util.*
 
@@ -18,7 +18,7 @@ class ContactViewModel:ViewModel() {
     fun loadContact(contactId: UUID){
         contactIdLiveData.value = contactId
     }
-    fun updateContact(contact:Contact){
+    fun updateContact(contact: Contact){
         contactRepository.updateContact(contact)
     }
     fun deleteContact(contactId: UUID){

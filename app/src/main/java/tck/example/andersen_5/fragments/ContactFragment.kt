@@ -12,7 +12,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.load
-import tck.example.andersen_5.classes.Contact
+import tck.example.andersen_5.contactsDatabase.Contact
 import tck.example.andersen_5.R
 import tck.example.andersen_5.dialogs.deleteContactDialog
 import tck.example.andersen_5.viewModel.ContactViewModel

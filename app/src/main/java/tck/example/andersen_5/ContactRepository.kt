@@ -3,7 +3,7 @@ package tck.example.andersen_5
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import tck.example.andersen_5.classes.Contact
+import tck.example.andersen_5.contactsDatabase.Contact
 import tck.example.andersen_5.contactsDatabase.ContactDatabase
 import java.util.*
 import java.util.concurrent.Executors

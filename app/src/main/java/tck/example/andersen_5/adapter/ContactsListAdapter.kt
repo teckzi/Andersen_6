@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import tck.example.andersen_5.classes.Contact
+import tck.example.andersen_5.contactsDatabase.Contact
 import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
 import coil.load
@@ -93,7 +93,7 @@ class ContactHolder(val view: View): RecyclerView.ViewHolder(view), View.OnClick
     }
 }
 
-class MyDiffUtil(private val oldList:List<Contact>,private val newList:List<Contact>): DiffUtil.Callback(){
+class MyDiffUtil(private val oldList:List<Contact>, private val newList:List<Contact>): DiffUtil.Callback(){
     override fun getOldListSize(): Int {
         return oldList.size
     }
